@@ -26,20 +26,54 @@ func (h *HashTable) Insert(key string) {
 }
 
 // Search
-// func (h *HashTable) Search(key string) bool {
-// 	index := Hash(key)
-// }
+func (h *HashTable) Search(key string) bool {
+	index := Hash(key)
+	return h.array[index].search(key)
+}
 
 // // Delete
-// func (h *HashTable) Delete(key string) {
-// 	index := Hash(key)
-// }
+func (h *HashTable) Delete(key string) {
+	index := Hash(key)
+	h.array[index].delete(key)
+}
 
 // insert
 func (b *Bucket) insert(key string) {
-	newNode := &BucketNode{key: key}
-	newNode.next = b.head
-	b.head = newNode
+	if !b.search(key) {
+		newNode := &BucketNode{key: key}
+		newNode.next = b.head
+		b.head = newNode
+	} else {
+		fmt.Printf("%v already exist\n", key)
+	}
+}
+
+// search
+func (b *Bucket) search(key string) bool {
+	currentNode := b.head
+	for currentNode != nil {
+		if currentNode.key == key {
+			return true
+		}
+		currentNode = currentNode.next
+	}
+	return false
+}
+
+// delete
+func (b *Bucket) delete(key string) {
+	if b.head.key == key {
+		b.head = b.head.next
+		return
+	}
+	prevNode := b.head
+	for prevNode.next != nil {
+		if prevNode.next.key == key {
+			// delete
+			prevNode.next = prevNode.next.next
+		}
+		prevNode = prevNode.next
+	}
 }
 
 // Hash
@@ -61,11 +95,19 @@ func Init() *HashTable {
 }
 
 func main() {
-	test := Init()
-	fmt.Println(test)
-	fmt.Println(Hash("TEST"))
-
-	testB := &Bucket{}
-	test.Insert("TEST2")
-	fmt.Println(testB)
+	hashTable := Init()
+	list := []string{
+		"TEST1",
+		"TEST2",
+		"TEST3",
+		"TEST4",
+		"TEST5",
+		"TEST6",
+		"TEST7",
+	}
+	for _, v := range list {
+		hashTable.Insert(v)
+	}
+	hashTable.Delete("TEST6")
+	fmt.Println(hashTable.Search("TEST6"))
 }
