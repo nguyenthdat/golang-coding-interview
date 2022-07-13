@@ -20,6 +20,17 @@ func (l *LinkedList) prepend(n *Node) {
 	l.length++
 }
 
+func (l *LinkedList) append(n *Node) {
+	currentNode := l.head
+	for i := 0; i < l.length; i++ {
+		if currentNode.next == nil {
+			currentNode.next = n
+			return
+		}
+		currentNode = currentNode.next
+	}
+}
+
 // search
 // func (l *LinkedList) search(s int) {
 // }
@@ -51,12 +62,15 @@ func (l LinkedList) printLinkedListData() {
 
 func main() {
 	myList := LinkedList{}
-	n1 := &Node{data: 22}
-	n2 := &Node{data: 32}
-	n3 := &Node{data: 12}
+	n1 := &Node{data: 1}
+	n2 := &Node{data: 2}
+	n3 := &Node{data: 3}
+
+	n4 := &Node{data: 4}
 	myList.prepend(n1)
 	myList.prepend(n2)
 	myList.prepend(n3)
-	myList.delete(32)
+	myList.append(n4)
+	// myList.delete(32)
 	myList.printLinkedListData()
 }
