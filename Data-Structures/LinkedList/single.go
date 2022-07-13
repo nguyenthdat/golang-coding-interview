@@ -51,6 +51,22 @@ func (l *LinkedList) delete(data int) {
 	}
 }
 
+func (l *LinkedList) reverse() {
+	if l.head.next == nil {
+		return
+	}
+	firstNode := l.head
+	secondNode := l.head.next
+	for secondNode != nil {
+		tempNode := secondNode.next
+		secondNode.next = firstNode
+		firstNode = secondNode
+		secondNode = tempNode
+	}
+	l.head.next = nil
+	l.head = firstNode
+}
+
 // print all nodes
 func (l LinkedList) printLinkedListData() {
 	currentNode := l.head
@@ -72,5 +88,8 @@ func main() {
 	myList.prepend(n3)
 	myList.append(n4)
 	// myList.delete(32)
+	myList.printLinkedListData()
+	myList.reverse()
+	fmt.Println()
 	myList.printLinkedListData()
 }
